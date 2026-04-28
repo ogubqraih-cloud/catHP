@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>活動・ブログ | 東京猫ランドsea</title>
+  <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --warm-cream:  #faf7f2;
+      --warm-sand:   #e8ddd0;
+      --warm-brown:  #8b5e3c;
+      --warm-mocha:  #5c3d2e;
+      --warm-green:  #4a7c59;
+      --warm-peach:  #f5e6d3;
+      --surface:     rgba(255,251,246,0.92);
+      --text:        #3d2b1f;
+      --muted:       #7a5c48;
+      --border:      rgba(139,94,60,0.18);
+      --border-light:rgba(139,94,60,0.10);
+      --shadow-sm:   0 2px 12px rgba(92,61,46,0.08);
+      --shadow-md:   0 4px 24px rgba(92,61,46,0.12);
+      --shadow-lg:   0 8px 40px rgba(92,61,46,0.18);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Zen Maru Gothic','Nunito',sans-serif; background: var(--warm-cream); color: var(--text); line-height: 1.7; }
+    h1,h2,h3 { font-weight: 700; line-height: 1.3; }
+    a { color: inherit; text-decoration: none; }
+
+    /* ===== ナビゲーション ===== */
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0; height: 64px;
+      background: rgba(250,247,242,0.92); backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border-light); z-index: 100;
+      transition: box-shadow 0.3s;
+    }
+    .nav.scrolled { box-shadow: 0 2px 20px rgba(92,61,46,0.12); }
+    .nav-inner {
+      max-width: 1100px; margin: 0 auto; padding: 0 24px; height: 100%;
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    }
+    .nav-logo { font-size: 1.15rem; font-weight: 700; color: var(--warm-mocha); }
+    .nav-links { display: flex; align-items: center; gap: 28px; list-style: none; }
+    .nav-links a { font-size: 0.9rem; color: var(--muted); font-weight: 500; transition: color 0.2s; }
+    .nav-links a:hover, .nav-links a.active { color: var(--warm-brown); }
+    .btn-primary {
+      display: inline-block; background: linear-gradient(135deg, var(--warm-brown), #c47d4e);
+      color: #fff; padding: 9px 22px; border-radius: 999px; font-weight: 700;
+      font-size: 0.88rem; transition: transform 0.18s, box-shadow 0.18s;
+      box-shadow: 0 4px 16px rgba(139,94,60,0.30); border: none; cursor: pointer; font-family: inherit;
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(139,94,60,0.40); }
+    .nav-hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 8px; background: none; border: none; }
+    .nav-hamburger span { display: block; width: 24px; height: 2px; background: var(--warm-mocha); border-radius: 2px; }
+    .nav-mobile {
+      display: none; position: fixed; top: 64px; left: 0; right: 0; bottom: 0;
+      background: var(--warm-cream); z-index: 99;
+      flex-direction: column; align-items: center; justify-content: center; gap: 32px;
+    }
+    .nav-mobile.open { display: flex; }
+    .nav-mobile a { font-size: 1.2rem; color: var(--warm-mocha); font-weight: 700; }
+
+    /* ===== ページヘッダー ===== */
+    .page-header {
+      padding: 100px 24px 48px;
+      background: linear-gradient(145deg, #fdf8f3, #f0ebe3, #e8f0e8);
+      text-align: center;
+    }
+    .page-header-label {
+      display: inline-block; background: var(--warm-peach); color: var(--warm-brown);
+      font-size: 0.78rem; font-weight: 700; letter-spacing: 0.1em;
+      padding: 4px 14px; border-radius: 999px; margin-bottom: 12px;
+    }
+    .page-header h1 { font-size: clamp(1.8rem, 4vw, 2.4rem); color: var(--warm-mocha); margin-bottom: 12px; }
+    .page-header p { color: var(--muted); font-size: 0.95rem; margin-bottom: 28px; }
+
+    /* 検索バー */
+    .search-wrap { max-width: 480px; margin: 0 auto; position: relative; }
+    .search-input {
+      width: 100%; padding: 14px 50px 14px 20px;
+      border: 1.5px solid var(--border); border-radius: 999px;
+      background: rgba(255,255,255,0.9); font-family: inherit; font-size: 0.95rem;
+      color: var(--text); outline: none; transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .search-input:focus { border-color: var(--warm-brown); box-shadow: 0 0 0 3px rgba(139,94,60,0.12); }
+    .search-icon { position: absolute; right: 18px; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: 1rem; pointer-events: none; }
+
+    /* カテゴリタブ */
+    .cat-tabs-wrap { background: #fff; border-bottom: 1px solid var(--border-light); position: sticky; top: 64px; z-index: 50; }
+    .cat-tabs {
+      max-width: 1100px; margin: 0 auto; padding: 0 24px;
+      display: flex; gap: 4px; overflow-x: auto; -ms-overflow-style: none; scrollbar-width: none;
+    }
+    .cat-tabs::-webkit-scrollbar { display: none; }
+    .cat-tab {
+      flex-shrink: 0; padding: 14px 20px;
+      font-size: 0.88rem; font-weight: 600; color: var(--muted);
+      border: none; background: none; cursor: pointer; font-family: inherit;
+      border-bottom: 2px solid transparent; transition: color 0.2s, border-color 0.2s;
+      white-space: nowrap;
+    }
+    .cat-tab.active { color: var(--warm-brown); border-bottom-color: var(--warm-brown); }
+    .cat-tab:hover { color: var(--warm-brown); }
+
+    /* ===== メインレイアウト ===== */
+    .blog-layout {
+      max-width: 1100px; margin: 0 auto; padding: 40px 24px;
+      display: grid; grid-template-columns: 1fr 300px; gap: 40px; align-items: start;
+    }
+
+    /* ===== 記事カード ===== */
+    .articles-grid { display: flex; flex-direction: column; gap: 24px; }
+    .article-card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 20px;
+      overflow: hidden; display: flex; transition: transform 0.22s, box-shadow 0.22s;
+      box-shadow: var(--shadow-sm); cursor: pointer;
+    }
+    .article-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+    .article-card.hidden { display: none; }
+    .article-thumb {
+      width: 180px; min-height: 140px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center; font-size: 3rem;
+    }
+    .article-body { padding: 20px; flex: 1; }
+    .article-meta { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; flex-wrap: wrap; }
+    .article-cat {
+      font-size: 0.7rem; font-weight: 700; padding: 2px 10px; border-radius: 999px;
+    }
+    .cat-nekojouhou { background: #dcfce7; color: #166534; }
+    .cat-event      { background: #dbeafe; color: #1e40af; }
+    .cat-blog       { background: var(--warm-peach); color: var(--warm-brown); }
+    .cat-report     { background: #f3e8ff; color: #6b21a8; }
+    .article-date { font-size: 0.78rem; color: var(--muted); }
+    .article-read  { font-size: 0.75rem; color: var(--muted); display: flex; align-items: center; gap: 4px; }
+    .article-title { font-size: 1rem; font-weight: 700; color: var(--warm-mocha); margin-bottom: 8px; line-height: 1.5; }
+    .article-excerpt { font-size: 0.85rem; color: var(--muted); line-height: 1.7; margin-bottom: 12px; }
+    .article-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+    .article-tag {
+      font-size: 0.72rem; background: rgba(139,94,60,0.08); color: var(--warm-brown);
+      padding: 2px 8px; border-radius: 999px; cursor: pointer;
+      transition: background 0.2s;
+    }
+    .article-tag:hover { background: rgba(139,94,60,0.18); }
+    .article-footer { display: flex; align-items: center; justify-content: space-between; }
+    .like-btn {
+      display: flex; align-items: center; gap: 6px; font-size: 0.82rem; color: var(--muted);
+      background: none; border: 1px solid var(--border); border-radius: 999px;
+      padding: 4px 12px; cursor: pointer; font-family: inherit;
+      transition: color 0.2s, background 0.2s, border-color 0.2s;
+    }
+    .like-btn.liked { color: #e11d48; border-color: #e11d48; background: #fff1f2; }
+    .read-more { font-size: 0.82rem; font-weight: 700; color: var(--warm-brown); }
+    .read-more:hover { text-decoration: underline; }
+    .no-result { padding: 40px; text-align: center; color: var(--muted); font-size: 0.95rem; display: none; }
+
+    /* ===== サイドバー ===== */
+    .sidebar { position: sticky; top: 120px; display: flex; flex-direction: column; gap: 20px; }
+    .sidebar-card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 20px;
+      padding: 20px; box-shadow: var(--shadow-sm);
+    }
+    .sidebar-title { font-size: 0.88rem; font-weight: 700; color: var(--warm-mocha); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+
+    /* カレンダー */
+    .cal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+    .cal-month { font-size: 0.95rem; font-weight: 700; color: var(--warm-mocha); }
+    .cal-nav { background: none; border: 1px solid var(--border); border-radius: 50%; width: 28px; height: 28px; cursor: pointer; font-size: 0.8rem; display: flex; align-items: center; justify-content: center; color: var(--muted); transition: background 0.2s; }
+    .cal-nav:hover { background: var(--warm-peach); color: var(--warm-brown); }
+    .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; }
+    .cal-dow { text-align: center; font-size: 0.68rem; font-weight: 700; color: var(--muted); padding: 4px 0; }
+    .cal-day {
+      text-align: center; font-size: 0.75rem; padding: 4px 2px; border-radius: 6px;
+      cursor: default; color: var(--text); position: relative; line-height: 1.6;
+    }
+    .cal-day.has-post { background: var(--warm-peach); color: var(--warm-brown); font-weight: 700; cursor: pointer; }
+    .cal-day.has-post:hover { background: var(--warm-brown); color: #fff; }
+    .cal-day.today { border: 1.5px solid var(--warm-brown); font-weight: 700; }
+    .cal-day.other-month { color: rgba(139,94,60,0.25); }
+    .cal-day.empty { visibility: hidden; }
+
+    /* カテゴリ一覧 */
+    .cat-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .cat-list li { display: flex; align-items: center; justify-content: space-between; }
+    .cat-list a { font-size: 0.88rem; color: var(--muted); cursor: pointer; transition: color 0.2s; }
+    .cat-list a:hover { color: var(--warm-brown); }
+    .cat-count { font-size: 0.75rem; background: var(--warm-peach); color: var(--warm-brown); padding: 1px 8px; border-radius: 999px; font-weight: 700; }
+
+    /* タグクラウド */
+    .tag-cloud { display: flex; flex-wrap: wrap; gap: 6px; }
+    .cloud-tag {
+      font-size: 0.75rem; padding: 4px 12px; border-radius: 999px;
+      border: 1px solid var(--border); color: var(--muted); cursor: pointer;
+      transition: background 0.2s, color 0.2s, border-color 0.2s;
+    }
+    .cloud-tag:hover, .cloud-tag.active { background: var(--warm-brown); color: #fff; border-color: var(--warm-brown); }
+
+    /* 最新記事 */
+    .recent-list { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+    .recent-item { display: flex; gap: 10px; align-items: flex-start; cursor: pointer; }
+    .recent-item:hover .recent-title { color: var(--warm-brown); }
+    .recent-thumb { width: 48px; height: 48px; border-radius: 10px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; }
+    .recent-title { font-size: 0.82rem; font-weight: 600; color: var(--warm-mocha); line-height: 1.4; transition: color 0.2s; }
+    .recent-date { font-size: 0.72rem; color: var(--muted); margin-top: 2px; }
+
+    /* RSS/購読 */
+    .subscribe-area { text-align: center; }
+    .subscribe-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 10px 20px; border-radius: 999px; border: 1.5px solid var(--border);
+      font-size: 0.85rem; font-weight: 700; color: var(--warm-mocha);
+      background: var(--surface); cursor: pointer; font-family: inherit;
+      transition: background 0.18s, box-shadow 0.18s;
+    }
+    .subscribe-btn:hover { background: var(--warm-peach); box-shadow: var(--shadow-sm); }
+
+    /* ===== フッター ===== */
+    footer { background: var(--warm-mocha); color: rgba(255,255,255,0.8); padding: 48px 0 28px; }
+    .footer-inner { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+    .footer-top {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      gap: 32px; padding-bottom: 32px; border-bottom: 1px solid rgba(255,255,255,0.12);
+      margin-bottom: 28px; flex-wrap: wrap;
+    }
+    .footer-logo { font-size: 1.1rem; font-weight: 700; color: #fff; margin-bottom: 8px; }
+    .footer-tagline { font-size: 0.82rem; }
+    .footer-nav { display: flex; gap: 24px; list-style: none; flex-wrap: wrap; }
+    .footer-nav a { color: rgba(255,255,255,0.7); font-size: 0.88rem; transition: color 0.2s; }
+    .footer-nav a:hover { color: #fff; }
+    .footer-copy { font-size: 0.78rem; color: rgba(255,255,255,0.45); text-align: center; }
+
+    /* フェードイン */
+    .fade-in { opacity: 0; transform: translateY(16px); transition: opacity 0.5s ease, transform 0.5s ease; }
+    .fade-in.visible { opacity: 1; transform: none; }
+
+    /* レスポンシブ */
+    @media (max-width: 900px) {
+      .blog-layout { grid-template-columns: 1fr; }
+      .sidebar { position: static; }
+      .article-thumb { width: 120px; }
+    }
+    @media (max-width: 600px) {
+      .nav-links, .nav > .nav-inner > .btn-primary { display: none; }
+      .nav-hamburger { display: flex; }
+      .article-card { flex-direction: column; }
+      .article-thumb { width: 100%; height: 160px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="nav" id="nav">
+    <div class="nav-inner">
+      <a href="cat.html" class="nav-logo">🐱 東京猫ランドsea</a>
+      <ul class="nav-links">
+        <li><a href="cat.html#cats">里親募集中の猫</a></li>
+        <li><a href="cat.html#adopted">里親済みの猫</a></li>
+        <li><a href="blog.html" class="active">活動・ブログ</a></li>
+        <li><a href="cat.html#process">里親の流れ・FAQ</a></li>
+      </ul>
+      <a href="cat.html#contact" class="btn-primary">里親に応募する</a>
+      <button class="nav-hamburger" id="hamburger" aria-label="メニュー">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <div class="nav-mobile" id="nav-mobile">
+    <a href="cat.html#cats"    onclick="closeMobile()">里親募集中の猫</a>
+    <a href="cat.html#adopted" onclick="closeMobile()">里親済みの猫</a>
+    <a href="blog.html"        onclick="closeMobile()">活動・ブログ</a>
+    <a href="cat.html#process" onclick="closeMobile()">里親の流れ・FAQ</a>
+    <a href="cat.html#contact" class="btn-primary" onclick="closeMobile()">里親に応募する</a>
+  </div>
+
+  <!-- ページヘッダー -->
+  <div class="page-header">
+    <span class="page-header-label">BLOG</span>
+    <h1>活動・ブログ</h1>
+    <p>日々の保護活動、猫たちの近況、譲渡会のお知らせをお届けします。</p>
+    <div class="search-wrap">
+      <input type="text" class="search-input" id="searchInput" placeholder="記事を検索…">
+      <span class="search-icon">🔍</span>
+    </div>
+  </div>
+
+  <!-- カテゴリタブ -->
+  <div class="cat-tabs-wrap">
+    <div class="cat-tabs" id="catTabs">
+      <button class="cat-tab active" data-cat="all">すべて</button>
+      <button class="cat-tab" data-cat="猫情報">🐱 猫情報</button>
+      <button class="cat-tab" data-cat="イベント">📅 イベント</button>
+      <button class="cat-tab" data-cat="ブログ">✏️ ブログ</button>
+      <button class="cat-tab" data-cat="レポート">📋 レポート</button>
+    </div>
+  </div>
+
+  <!-- メインレイアウト -->
+  <div class="blog-layout">
+
+    <!-- 記事一覧 -->
+    <main>
+      <div class="articles-grid" id="articlesGrid">
+
+        <article class="article-card fade-in" data-cat="ブログ" data-tags="保護活動,春,レポート" data-title="春の保護活動レポート。今月は8匹の猫を保護しました。">
+          <div class="article-thumb" style="background:linear-gradient(135deg,#fde8d0,#fdd5b0)">🌸</div>
+          <div class="article-body">
+            <div class="article-meta">
+              <span class="article-cat cat-blog">ブログ</span>
+              <span class="article-date">2026年4月25日</span>
+              <span class="article-read">⏱ 5分</span>
+            </div>
+            <div class="article-title">春の保護活動レポート。今月は8匹の猫を保護しました。</div>
+            <div class="article-excerpt">暖かくなるにつれて、外猫の相談が増えてきました。今月は東京都内で8匹の猫を保護。うち2匹は子猫で、現在育て親さんのもとで元気に育っています。</div>
+            <div class="article-tags">
+              <span class="article-tag" data-tag="保護活動">保護活動</span>
+              <span class="article-tag" data-tag="春">春</span>
+              <span class="article-tag" data-tag="レポート">レポート</span>
+            </div>
+            <div class="article-footer">
+              <button class="like-btn" onclick="toggleLike(this)">🤍 <span class="like-count">24</span></button>
+              <a href="#" class="read-more">続きを読む →</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="article-card fade-in" data-cat="イベント" data-tags="譲渡会,5月,渋谷" data-title="5月の譲渡会のお知らせ｜渋谷区文化センター">
+          <div class="article-thumb" style="background:linear-gradient(135deg,#dbeafe,#bfdbfe)">📅</div>
+          <div class="article-body">
+            <div class="article-meta">
+              <span class="article-cat cat-event">イベント</span>
+              <span class="article-date">2026年4月20日</span>
+              <span class="article-read">⏱ 2分</span>
+            </div>
+            <div class="article-title">5月の譲渡会のお知らせ｜渋谷区文化センター</div>
+            <div class="article-excerpt">5月18日（日）に渋谷区文化センターにて譲渡会を開催します。むぎ、くろ、ちょこなど8匹が参加予定です。入場無料・事前予約不要でご参加いただけます。</div>
+            <div class="article-tags">
+              <span class="article-tag" data-tag="譲渡会">譲渡会</span>
+              <span class="article-tag" data-tag="5月">5月</span>
+              <span class="article-tag" data-tag="渋谷">渋谷</span>
+            </div>
+            <div class="article-footer">
+              <button class="like-btn" onclick="toggleLike(this)">🤍 <span class="like-count">41</span></button>
+              <a href="#" class="read-more">続きを読む →</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="article-card fade-in" data-cat="猫情報" data-tags="里親決定,はな,おめでとう" data-title="はなちゃんの里親が決まりました！ありがとうございます。">
+          <div class="article-thumb" style="background:linear-gradient(135deg,#dcfce7,#bbf7d0)">🎉</div>
+          <div class="article-body">
+            <div class="article-meta">
+              <span class="article-cat cat-nekojouhou">猫情報</span>
+              <span class="article-date">2026年4月15日</span>
+              <span class="article-read">⏱ 3分</span>
+            </div>
+            <div class="article-title">はなちゃんの里親が決まりました！ありがとうございます。</div>
+            <div class="article-excerpt">3月から里親募集をしていたはなちゃんに、素敵なご家族が決まりました。新しいお家では先住猫の「さくら」ちゃんとも仲良くなれたそうで、ほっとしています。</div>
+            <div class="article-tags">
+              <span class="article-tag" data-tag="里親決定">里親決定</span>
+              <span class="article-tag" data-tag="はな">はな</span>
+              <span class="article-tag" data-tag="おめでとう">おめでとう</span>
+            </div>
+            <div class="article-footer">
+              <button class="like-btn" onclick="toggleLike(this)">🤍 <span class="like-count">67</span></button>
+              <a href="#" class="read-more">続きを読む →</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="article-card fade-in" data-cat="ブログ" data-tags="里親体験談,暮らし,1年" data-title="保護猫と暮らして1年。あの日の決断が人生を変えました。">
+          <div class="article-thumb" style="background:linear-gradient(135deg,#fde8d0,#e8d5c0)">🏡</div>
+          <div class="article-body">
+            <div class="article-meta">
+              <span class="article-cat cat-blog">ブログ</span>
+              <span class="article-date">2026年4月10日</span>
+              <span class="article-read">⏱ 8分</span>
+            </div>
+            <div class="article-title">保護猫と暮らして1年。あの日の決断が人生を変えました。</div>
+            <div class="article-excerpt">「本当に自分でできるかな」と不安だった里親さんからの寄稿記事です。1年経った今、「あの日決めてよかった」という言葉に胸が熱くなりました。</div>
+            <div class="article-tags">
+              <span class="article-tag" data-tag="里親体験談">里親体験談</span>
+              <span class="article-tag" data-tag="暮らし">暮らし</span>
+              <span class="article-tag" data-tag="1年">1年</span>
+            </div>
+            <div class="article-footer">
+              <button class="like-btn" onclick="toggleLike(this)">🤍 <span class="like-count">92</span></button>
+              <a href="#" class="read-more">続きを読む →</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="article-card fade-in" data-cat="レポート" data-tags="譲渡会,春,12組" data-title="春の譲渡会レポート｜12組のご家族にご参加いただきました">
+          <div class="article-thumb" style="background:linear-gradient(135deg,#f3e8ff,#e9d5ff)">📋</div>
+          <div class="article-body">
+            <div class="article-meta">
+              <span class="article-cat cat-report">レポート</span>
+              <span class="article-date">2026年4月1日</span>
+              <span class="article-read">⏱ 6分</span>
+            </div>
+            <div class="article-title">春の譲渡会レポート｜12組のご家族にご参加いただきました</div>
+            <div class="article-excerpt">3月29日に開催した春の譲渡会には12組のご家族にお越しいただき、そのうち3組の方と正式にお話が進んでいます。温かいご支援をありがとうございました。</div>
+            <div class="article-tags">
+              <span class="article-tag" data-tag="譲渡会">譲渡会</span>
+              <span class="article-tag" data-tag="春">春</span>
+              <span class="article-tag" data-tag="12組">12組</span>
+            </div>
+            <div class="article-footer">
+              <button class="like-btn" onclick="toggleLike(this)">🤍 <span class="like-count">38</span></button>
+              <a href="#" class="read-more">続きを読む →</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="article-card fade-in" data-cat="猫情報" data-tags="むぎ,緊急保護,キジトラ" data-title="むぎちゃんが緊急保護されました。里親募集を開始します。">
+          <div class="article-thumb" style="background:linear-gradient(135deg,#fde8d0,#fdd5b0)">🐈</div>
+          <div class="article-body">
+            <div class="article-meta">
+              <span class="article-cat cat-nekojouhou">猫情報</span>
+              <span class="article-date">2026年3月28日</span>
+              <span class="article-read">⏱ 4分</span>
+            </div>
+            <div class="article-title">むぎちゃんが緊急保護されました。里親募集を開始します。</div>
+            <div class="article-excerpt">渋谷区内の工事現場近くで保護されたキジトラの女の子「むぎ」。ワクチン接種・健康診断済み。人懐っこく、すでにボランティアのひざの上でごろごろしています。</div>
+            <div class="article-tags">
+              <span class="article-tag" data-tag="むぎ">むぎ</span>
+              <span class="article-tag" data-tag="緊急保護">緊急保護</span>
+              <span class="article-tag" data-tag="キジトラ">キジトラ</span>
+            </div>
+            <div class="article-footer">
+              <button class="like-btn" onclick="toggleLike(this)">🤍 <span class="like-count">55</span></button>
+              <a href="cat-mugi.html" class="read-more">続きを読む →</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="article-card fade-in" data-cat="ブログ" data-tags="3月,活動まとめ,月次" data-title="3月の活動まとめ。保護5匹・里親決定3匹">
+          <div class="article-thumb" style="background:linear-gradient(135deg,#d4e8c8,#c0e0b8)">🌱</div>
+          <div class="article-body">
+            <div class="article-meta">
+              <span class="article-cat cat-blog">ブログ</span>
+              <span class="article-date">2026年3月20日</span>
+              <span class="article-read">⏱ 5分</span>
+            </div>
+            <div class="article-title">3月の活動まとめ。保護5匹・里親決定3匹</div>
+            <div class="article-excerpt">今月の活動をまとめました。保護5匹（成猫3・子猫2）、里親決定3匹、譲渡会1回開催。寄付・物資支援をいただいた方々に心よりお礼申し上げます。</div>
+            <div class="article-tags">
+              <span class="article-tag" data-tag="3月">3月</span>
+              <span class="article-tag" data-tag="活動まとめ">活動まとめ</span>
+              <span class="article-tag" data-tag="月次">月次</span>
+            </div>
+            <div class="article-footer">
+              <button class="like-btn" onclick="toggleLike(this)">🤍 <span class="like-count">29</span></button>
+              <a href="#" class="read-more">続きを読む →</a>
+            </div>
+          </div>
+        </article>
+
+      </div>
+      <div class="no-result" id="noResult">🔍 該当する記事が見つかりませんでした。</div>
+    </main>
+
+    <!-- サイドバー -->
+    <aside class="sidebar">
+
+      <!-- カレンダー -->
+      <div class="sidebar-card">
+        <div class="sidebar-title">📅 カレンダー</div>
+        <div class="cal-header">
+          <button class="cal-nav" id="calPrev">‹</button>
+          <div class="cal-month" id="calMonth"></div>
+          <button class="cal-nav" id="calNext">›</button>
+        </div>
+        <div class="cal-grid" id="calGrid"></div>
+      </div>
+
+      <!-- カテゴリ -->
+      <div class="sidebar-card">
+        <div class="sidebar-title">📂 カテゴリ</div>
+        <ul class="cat-list">
+          <li><a onclick="filterCat('all')">すべての記事</a><span class="cat-count">7</span></li>
+          <li><a onclick="filterCat('猫情報')">🐱 猫情報</a><span class="cat-count">2</span></li>
+          <li><a onclick="filterCat('イベント')">📅 イベント</a><span class="cat-count">1</span></li>
+          <li><a onclick="filterCat('ブログ')">✏️ ブログ</a><span class="cat-count">3</span></li>
+          <li><a onclick="filterCat('レポート')">📋 レポート</a><span class="cat-count">1</span></li>
+        </ul>
+      </div>
+
+      <!-- タグクラウド -->
+      <div class="sidebar-card">
+        <div class="sidebar-title">🏷 タグ</div>
+        <div class="tag-cloud" id="tagCloud">
+          <span class="cloud-tag" data-tag="保護活動">保護活動</span>
+          <span class="cloud-tag" data-tag="譲渡会">譲渡会</span>
+          <span class="cloud-tag" data-tag="里親決定">里親決定</span>
+          <span class="cloud-tag" data-tag="里親体験談">里親体験談</span>
+          <span class="cloud-tag" data-tag="むぎ">むぎ</span>
+          <span class="cloud-tag" data-tag="暮らし">暮らし</span>
+          <span class="cloud-tag" data-tag="春">春</span>
+          <span class="cloud-tag" data-tag="緊急保護">緊急保護</span>
+          <span class="cloud-tag" data-tag="活動まとめ">活動まとめ</span>
+          <span class="cloud-tag" data-tag="渋谷">渋谷</span>
+        </div>
+      </div>
+
+      <!-- 最新記事 -->
+      <div class="sidebar-card">
+        <div class="sidebar-title">📰 最新記事</div>
+        <ul class="recent-list">
+          <li class="recent-item">
+            <div class="recent-thumb" style="background:linear-gradient(135deg,#fde8d0,#fdd5b0)">🌸</div>
+            <div>
+              <div class="recent-title">春の保護活動レポート。今月は8匹の猫を保護しました。</div>
+              <div class="recent-date">2026年4月25日</div>
+            </div>
+          </li>
+          <li class="recent-item">
+            <div class="recent-thumb" style="background:linear-gradient(135deg,#dbeafe,#bfdbfe)">📅</div>
+            <div>
+              <div class="recent-title">5月の譲渡会のお知らせ</div>
+              <div class="recent-date">2026年4月20日</div>
+            </div>
+          </li>
+          <li class="recent-item">
+            <div class="recent-thumb" style="background:linear-gradient(135deg,#dcfce7,#bbf7d0)">🎉</div>
+            <div>
+              <div class="recent-title">はなちゃんの里親が決まりました！</div>
+              <div class="recent-date">2026年4月15日</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <!-- 購読 -->
+      <div class="sidebar-card">
+        <div class="sidebar-title">📬 更新通知</div>
+        <div class="subscribe-area">
+          <p style="font-size:0.82rem;color:var(--muted);margin-bottom:12px">新しい記事をSNSでお知らせします</p>
+          <button class="subscribe-btn">📷 Instagramをフォロー</button>
+        </div>
+      </div>
+
+    </aside>
+  </div>
+
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div>
+          <div class="footer-logo">🐱 東京猫ランドsea</div>
+          <div class="footer-tagline">東京の保護猫たちに、あたたかい家族を。</div>
+        </div>
+        <ul class="footer-nav">
+          <li><a href="cat.html#cats">里親募集中の猫</a></li>
+          <li><a href="cat.html#adopted">里親済みの猫</a></li>
+          <li><a href="blog.html">活動・ブログ</a></li>
+          <li><a href="cat.html#process">里親の流れ</a></li>
+          <li><a href="cat.html#contact">お問い合わせ</a></li>
+        </ul>
+      </div>
+      <div class="footer-copy">© 2026 東京猫ランドsea. All rights reserved.</div>
+    </div>
+  </footer>
+
+  <script>
+    // ナビ
+    window.addEventListener('scroll', () => document.getElementById('nav').classList.toggle('scrolled', scrollY > 20));
+    document.getElementById('hamburger').addEventListener('click', () => document.getElementById('nav-mobile').classList.toggle('open'));
+    function closeMobile() { document.getElementById('nav-mobile').classList.remove('open'); }
+
+    // フェードイン
+    new IntersectionObserver((entries) => {
+      entries.forEach((e, i) => { if (e.isIntersecting) { setTimeout(() => e.target.classList.add('visible'), i * 80); } });
+    }, { threshold: 0.1 }).observe ? (() => {
+      const obs = new IntersectionObserver((entries) => {
+        entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+      }, { threshold: 0.1 });
+      document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
+    })() : document.querySelectorAll('.fade-in').forEach(el => el.classList.add('visible'));
+
+    // ===== カテゴリ・検索・タグフィルター =====
+    let currentCat = 'all', currentTag = '', currentSearch = '';
+
+    function applyFilters() {
+      const cards = document.querySelectorAll('.article-card');
+      let visible = 0;
+      cards.forEach(card => {
+        const cat   = card.dataset.cat;
+        const tags  = (card.dataset.tags || '').split(',');
+        const title = card.dataset.title || '';
+        const catOk    = currentCat === 'all' || cat === currentCat;
+        const tagOk    = !currentTag || tags.includes(currentTag);
+        const searchOk = !currentSearch || title.includes(currentSearch);
+        const show = catOk && tagOk && searchOk;
+        card.classList.toggle('hidden', !show);
+        if (show) visible++;
+      });
+      document.getElementById('noResult').style.display = visible === 0 ? 'block' : 'none';
+    }
+
+    // カテゴリタブ
+    function filterCat(cat) {
+      currentCat = cat;
+      document.querySelectorAll('.cat-tab').forEach(t => t.classList.toggle('active', t.dataset.cat === cat));
+      applyFilters();
+    }
+    document.querySelectorAll('.cat-tab').forEach(tab => {
+      tab.addEventListener('click', () => filterCat(tab.dataset.cat));
+    });
+
+    // タグクラウド
+    document.querySelectorAll('.cloud-tag').forEach(tag => {
+      tag.addEventListener('click', () => {
+        const t = tag.dataset.tag;
+        if (currentTag === t) { currentTag = ''; tag.classList.remove('active'); }
+        else {
+          currentTag = t;
+          document.querySelectorAll('.cloud-tag').forEach(ct => ct.classList.remove('active'));
+          tag.classList.add('active');
+        }
+        applyFilters();
+      });
+    });
+
+    // 記事内タグ
+    document.querySelectorAll('.article-tag').forEach(tag => {
+      tag.addEventListener('click', (e) => {
+        e.stopPropagation();
+        currentTag = tag.dataset.tag;
+        document.querySelectorAll('.cloud-tag').forEach(ct => ct.classList.toggle('active', ct.dataset.tag === currentTag));
+        applyFilters();
+      });
+    });
+
+    // 検索
+    document.getElementById('searchInput').addEventListener('input', e => {
+      currentSearch = e.target.value.trim();
+      applyFilters();
+    });
+
+    // いいね
+    function toggleLike(btn) {
+      const liked = btn.classList.toggle('liked');
+      const count = btn.querySelector('.like-count');
+      count.textContent = parseInt(count.textContent) + (liked ? 1 : -1);
+      btn.querySelector('span:first-child') ? null : null;
+      btn.innerHTML = (liked ? '❤️' : '🤍') + ' <span class="like-count">' + count.textContent + '</span>';
+    }
+
+    // ===== カレンダー =====
+    // 記事が投稿された日（year-month-day）
+    const postDates = {
+      '2026-4': [25, 20, 15, 10, 1],
+      '2026-3': [28, 20, 10],
+      '2026-2': [14, 7],
+    };
+    let calYear = 2026, calMonth = 4;
+
+    function renderCalendar() {
+      const monthEl = document.getElementById('calMonth');
+      const gridEl  = document.getElementById('calGrid');
+      monthEl.textContent = `${calYear}年${calMonth}月`;
+      gridEl.innerHTML = '';
+
+      const dows = ['日','月','火','水','木','金','土'];
+      dows.forEach(d => {
+        const el = document.createElement('div');
+        el.className = 'cal-dow'; el.textContent = d;
+        gridEl.appendChild(el);
+      });
+
+      const first = new Date(calYear, calMonth - 1, 1).getDay();
+      const days  = new Date(calYear, calMonth, 0).getDate();
+      const today = new Date();
+      const posts = postDates[`${calYear}-${calMonth}`] || [];
+
+      for (let i = 0; i < first; i++) {
+        const el = document.createElement('div'); el.className = 'cal-day empty'; gridEl.appendChild(el);
+      }
+      for (let d = 1; d <= days; d++) {
+        const el = document.createElement('div');
+        el.className = 'cal-day';
+        el.textContent = d;
+        if (posts.includes(d)) el.classList.add('has-post');
+        if (calYear === today.getFullYear() && calMonth === today.getMonth() + 1 && d === today.getDate()) el.classList.add('today');
+        gridEl.appendChild(el);
+      }
+    }
+
+    document.getElementById('calPrev').addEventListener('click', () => {
+      calMonth--; if (calMonth < 1) { calMonth = 12; calYear--; } renderCalendar();
+    });
+    document.getElementById('calNext').addEventListener('click', () => {
+      calMonth++; if (calMonth > 12) { calMonth = 1; calYear++; } renderCalendar();
+    });
+
+    renderCalendar();
+  </script>
+</body>
+</html>

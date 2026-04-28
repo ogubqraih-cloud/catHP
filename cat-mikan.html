@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>みかん | 東京猫ランドsea</title>
+  <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{--warm-cream:#faf7f2;--warm-brown:#8b5e3c;--warm-mocha:#5c3d2e;--warm-peach:#f5e6d3;--surface:rgba(255,251,246,0.92);--text:#3d2b1f;--muted:#7a5c48;--border:rgba(139,94,60,0.18);--border-light:rgba(139,94,60,0.10);--shadow-sm:0 2px 12px rgba(92,61,46,0.08);--shadow-md:0 4px 24px rgba(92,61,46,0.12);--shadow-lg:0 8px 40px rgba(92,61,46,0.18)}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0} html{scroll-behavior:smooth}
+    body{font-family:'Zen Maru Gothic','Nunito',sans-serif;background:var(--warm-cream);color:var(--text);line-height:1.7}
+    h1,h2,h3{font-weight:700;line-height:1.3} a{color:inherit;text-decoration:none} img{display:block;width:100%;height:100%;object-fit:cover}
+    .nav{position:fixed;top:0;left:0;right:0;height:64px;background:rgba(250,247,242,0.92);backdrop-filter:blur(14px);border-bottom:1px solid var(--border-light);z-index:100;transition:box-shadow 0.3s}
+    .nav.scrolled{box-shadow:0 2px 20px rgba(92,61,46,0.12)}
+    .nav-inner{max-width:1100px;margin:0 auto;padding:0 24px;height:100%;display:flex;align-items:center;justify-content:space-between;gap:16px}
+    .nav-logo{font-size:1.1rem;font-weight:700;color:var(--warm-mocha)}
+    .nav-links{display:flex;align-items:center;gap:24px;list-style:none}
+    .nav-links a{font-size:0.88rem;color:var(--muted);font-weight:500;transition:color 0.2s} .nav-links a:hover{color:var(--warm-brown)}
+    .btn-primary{display:inline-block;background:linear-gradient(135deg,var(--warm-brown),#c47d4e);color:#fff;padding:9px 22px;border-radius:999px;font-weight:700;font-size:0.88rem;transition:transform 0.18s,box-shadow 0.18s;box-shadow:0 4px 16px rgba(139,94,60,0.30);border:none;cursor:pointer;font-family:inherit}
+    .btn-primary:hover{transform:translateY(-2px)}
+    .btn-secondary{display:inline-block;background:transparent;color:var(--warm-brown);padding:9px 22px;border-radius:999px;font-weight:700;font-size:0.88rem;border:2px solid var(--warm-brown);transition:background 0.18s,color 0.18s} .btn-secondary:hover{background:var(--warm-brown);color:#fff}
+    .nav-hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:8px;background:none;border:none}
+    .nav-hamburger span{display:block;width:24px;height:2px;background:var(--warm-mocha);border-radius:2px}
+    .nav-mobile{display:none;position:fixed;top:64px;left:0;right:0;bottom:0;background:var(--warm-cream);z-index:99;flex-direction:column;align-items:center;justify-content:center;gap:32px}
+    .nav-mobile.open{display:flex} .nav-mobile a{font-size:1.2rem;color:var(--warm-mocha);font-weight:700}
+    .breadcrumb{padding:80px 24px 0;max-width:1100px;margin:0 auto;font-size:0.82rem;color:var(--muted);display:flex;align-items:center;gap:8px} .breadcrumb a{color:var(--warm-brown)}
+    .cat-hero{padding:16px 24px 40px;max-width:1100px;margin:0 auto}
+    .cat-hero-inner{border-radius:28px;overflow:hidden;position:relative;height:420px;box-shadow:var(--shadow-lg)}
+    .cat-hero-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(50,28,14,0.82) 0%,transparent 55%);display:flex;align-items:flex-end;padding:32px}
+    .cat-hero-info{color:#fff}
+    .cat-badge{display:inline-block;background:#4a7c59;color:#fff;font-size:0.72rem;font-weight:700;padding:4px 12px;border-radius:999px;margin-bottom:12px}
+    .cat-hero-name{font-size:clamp(2rem,5vw,3rem);font-weight:700;margin-bottom:4px} .cat-hero-sub{font-size:1rem;opacity:0.88}
+    .cat-layout{max-width:1100px;margin:0 auto;padding:0 24px 80px;display:grid;grid-template-columns:1fr 340px;gap:40px;align-items:start}
+    .cat-section{margin-bottom:36px}
+    .cat-section-title{font-size:1rem;font-weight:700;color:var(--warm-mocha);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+    .cat-section-title::after{content:'';flex:1;height:1px;background:var(--border-light)}
+    .gallery-main{border-radius:20px;overflow:hidden;height:320px;margin-bottom:10px}
+    .gallery-thumbs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+    .gallery-thumb{border-radius:12px;overflow:hidden;height:90px;cursor:pointer;opacity:0.75;transition:opacity 0.2s;border:2px solid transparent}
+    .gallery-thumb.active{opacity:1;border-color:var(--warm-brown)} .gallery-thumb:hover{opacity:1}
+    .info-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+    .info-item{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px;text-align:center}
+    .info-label{font-size:0.72rem;color:var(--muted);font-weight:600;margin-bottom:4px} .info-value{font-size:0.95rem;font-weight:700;color:var(--warm-mocha)}
+    .personality-tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+    .p-tag{display:inline-flex;align-items:center;gap:6px;font-size:0.85rem;font-weight:600;padding:6px 16px;border-radius:999px;background:var(--warm-peach);color:var(--warm-brown)}
+    .story-text{font-size:0.92rem;color:var(--text);line-height:1.9} .story-text p+p{margin-top:12px}
+    .health-list{list-style:none;display:flex;flex-direction:column;gap:10px}
+    .health-item{display:flex;align-items:center;gap:12px;font-size:0.9rem}
+    .health-icon{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
+    .health-ok{background:#dcfce7} .health-pending{background:#fef3c7}
+    .health-label{font-weight:600;color:var(--warm-mocha)} .health-note{font-size:0.78rem;color:var(--muted)}
+    .cat-sidebar{position:sticky;top:84px;display:flex;flex-direction:column;gap:16px}
+    .sidebar-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:24px;box-shadow:var(--shadow-sm)}
+    .cta-card{background:linear-gradient(145deg,#fdf0e4,#f5ead8);border-color:rgba(139,94,60,0.25)}
+    .cta-title{font-size:1rem;font-weight:700;color:var(--warm-mocha);margin-bottom:4px} .cta-sub{font-size:0.82rem;color:var(--muted);margin-bottom:20px}
+    .cta-btn-wrap{display:flex;flex-direction:column;gap:10px}
+    .quick-facts{list-style:none;display:flex;flex-direction:column;gap:8px}
+    .quick-facts li{display:flex;justify-content:space-between;font-size:0.85rem;padding:8px 0;border-bottom:1px solid var(--border-light)} .quick-facts li:last-child{border-bottom:none}
+    .fact-label{color:var(--muted)} .fact-value{font-weight:700;color:var(--warm-mocha)}
+    .req-list{list-style:none;display:flex;flex-direction:column;gap:8px} .req-item{display:flex;align-items:flex-start;gap:8px;font-size:0.82rem}
+    .status-bar{background:#d1fae5;border:1px solid rgba(74,124,89,0.3);border-radius:12px;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+    .status-text{font-size:0.82rem;font-weight:700;color:#065f46}
+    .other-cats-section{background:var(--warm-peach);padding:60px 0}
+    .other-cats-inner{max-width:1100px;margin:0 auto;padding:0 24px}
+    .other-title{font-size:1.2rem;font-weight:700;color:var(--warm-mocha);margin-bottom:24px}
+    .other-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+    .other-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;overflow:hidden;transition:transform 0.22s,box-shadow 0.22s;box-shadow:var(--shadow-sm)} .other-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-md)}
+    .other-img{height:120px;display:flex;align-items:center;justify-content:center;font-size:3rem} .other-body{padding:12px} .other-name{font-size:0.95rem;font-weight:700;color:var(--warm-mocha)} .other-meta{font-size:0.75rem;color:var(--muted)}
+    footer{background:var(--warm-mocha);color:rgba(255,255,255,0.8);padding:48px 0 28px}
+    .footer-inner{max-width:1100px;margin:0 auto;padding:0 24px}
+    .footer-top{display:flex;justify-content:space-between;align-items:flex-start;gap:32px;padding-bottom:32px;border-bottom:1px solid rgba(255,255,255,0.12);margin-bottom:28px;flex-wrap:wrap}
+    .footer-logo{font-size:1.1rem;font-weight:700;color:#fff;margin-bottom:8px} .footer-nav{display:flex;gap:24px;list-style:none;flex-wrap:wrap} .footer-nav a{color:rgba(255,255,255,0.7);font-size:0.88rem;transition:color 0.2s} .footer-nav a:hover{color:#fff}
+    .footer-copy{font-size:0.78rem;color:rgba(255,255,255,0.45);text-align:center}
+    @media(max-width:900px){.cat-layout{grid-template-columns:1fr}.cat-sidebar{position:static}.info-grid{grid-template-columns:repeat(2,1fr)}.other-grid{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:600px){.nav-links,.nav>.nav-inner>.btn-primary{display:none}.nav-hamburger{display:flex}.cat-hero-inner{height:280px}}
+  </style>
+</head>
+<body>
+  <nav class="nav" id="nav"><div class="nav-inner">
+    <a href="cat.html" class="nav-logo">🐱 東京猫ランドsea</a>
+    <ul class="nav-links"><li><a href="cat.html#cats">里親募集中の猫</a></li><li><a href="blog.html">活動・ブログ</a></li><li><a href="cat.html#process">里親の流れ・FAQ</a></li></ul>
+    <a href="cat.html#contact" class="btn-primary">里親に応募する</a>
+    <button class="nav-hamburger" id="hamburger"><span></span><span></span><span></span></button>
+  </div></nav>
+  <div class="nav-mobile" id="nav-mobile">
+    <a href="cat.html#cats" onclick="closeMobile()">里親募集中の猫</a>
+    <a href="blog.html" onclick="closeMobile()">活動・ブログ</a>
+    <a href="cat.html#contact" class="btn-primary" onclick="closeMobile()">里親に応募する</a>
+  </div>
+
+  <div class="breadcrumb"><a href="cat.html">トップ</a> › <a href="cat.html#cats">里親募集中の猫</a> › <span>みかん</span></div>
+
+  <div class="cat-hero"><div class="cat-hero-inner">
+    <img style="width:100%;height:100%;object-fit:cover" src="https://images.unsplash.com/photo-1548366086-7f1b76106622?w=1200&q=85" alt="みかん" id="mainPhoto">
+    <div class="cat-hero-overlay"><div class="cat-hero-info">
+      <span class="cat-badge">🍊 里親募集中</span>
+      <div class="cat-hero-name">みかん</div>
+      <div class="cat-hero-sub">推定2歳・メス・茶トラ｜保護日：2025年10月18日</div>
+    </div></div>
+  </div></div>
+
+  <div class="cat-layout">
+    <div>
+      <div class="cat-section">
+        <div class="cat-section-title">📸 フォトギャラリー</div>
+        <div class="gallery-main"><img id="galleryMain" src="https://images.unsplash.com/photo-1548366086-7f1b76106622?w=800&q=80" alt="みかん"></div>
+        <div class="gallery-thumbs">
+          <div class="gallery-thumb active" onclick="changePhoto(this,'https://images.unsplash.com/photo-1548366086-7f1b76106622?w=800&q=80')"><img src="https://images.unsplash.com/photo-1548366086-7f1b76106622?w=200&q=70" alt=""></div>
+          <div class="gallery-thumb" onclick="changePhoto(this,'https://images.unsplash.com/photo-1529778873920-4da4926a72c2?w=800&q=80')"><img src="https://images.unsplash.com/photo-1529778873920-4da4926a72c2?w=200&q=70" alt=""></div>
+          <div class="gallery-thumb" onclick="changePhoto(this,'https://images.unsplash.com/photo-1472491235688-bdc81a63246e?w=800&q=80')"><img src="https://images.unsplash.com/photo-1472491235688-bdc81a63246e?w=200&q=70" alt=""></div>
+        </div>
+      </div>
+      <div class="cat-section">
+        <div class="cat-section-title">📋 基本情報</div>
+        <div class="info-grid">
+          <div class="info-item"><div class="info-label">推定年齢</div><div class="info-value">約2歳</div></div>
+          <div class="info-item"><div class="info-label">性別</div><div class="info-value">メス</div></div>
+          <div class="info-item"><div class="info-label">毛色・種類</div><div class="info-value">茶トラ（短毛）</div></div>
+          <div class="info-item"><div class="info-label">保護日</div><div class="info-value">2025/10/18</div></div>
+          <div class="info-item"><div class="info-label">保護場所</div><div class="info-value">江東区内</div></div>
+          <div class="info-item"><div class="info-item" style="background:none;border:none"><div class="info-value" style="color:#4a7c59">穏やか・マイペース</div></div></div>
+        </div>
+      </div>
+      <div class="cat-section">
+        <div class="cat-section-title">😺 みかんの性格</div>
+        <div class="personality-tags">
+          <span class="p-tag">🌼 マイペース</span>
+          <span class="p-tag">🤗 抱っこ大好き</span>
+          <span class="p-tag">🏡 落ち着いた環境向き</span>
+          <span class="p-tag">👵 高齢者向き</span>
+          <span class="p-tag">🌙 静かな子</span>
+        </div>
+        <div class="story-text">
+          <p>みかんは、どんな状況でも慌てない、おっとりとした女の子。抱っこをされると身をあずけてゴロゴロと喉を鳴らし、ずっとこうしていたいとばかりに目を細めます。</p>
+          <p>活発に走り回るより、お気に入りの場所でのんびり日向ぼっこをするのが好きなタイプ。静かな生活リズムのご家庭や、ゆっくりと猫との時間を楽しみたいシニアの方にも、とても向いています。</p>
+        </div>
+      </div>
+      <div class="cat-section">
+        <div class="cat-section-title">📖 みかんの保護ストーリー</div>
+        <div class="story-text">
+          <p>2025年10月、江東区内の公園で一匹でいるところを地域の方から通報いただき保護しました。人を怖がる様子が全くなく、保護した瞬間からすでに抱っこされてゴロゴロしていました。</p>
+          <p>もともと飼われていた可能性があり、マイクロチップはありませんでしたが、人慣れ度は抜群。しかし持ち主は現れず、現在も里親を待ち続けています。茶トラ特有の愛嬌あふれる表情と、ほかほかした抱き心地に、ぜひ癒されてください。</p>
+        </div>
+      </div>
+      <div class="cat-section">
+        <div class="cat-section-title">🏥 健康・ワクチン記録</div>
+        <ul class="health-list">
+          <li class="health-item"><div class="health-icon health-ok">✅</div><div><div class="health-label">健康診断</div><div class="health-note">2025年10月22日実施 — 異常なし</div></div></li>
+          <li class="health-item"><div class="health-icon health-ok">✅</div><div><div class="health-label">ワクチン接種（3種混合）</div><div class="health-note">2025年11月5日接種済み、翌年更新予定</div></div></li>
+          <li class="health-item"><div class="health-icon health-ok">✅</div><div><div class="health-label">ノミ・ダニ駆除</div><div class="health-note">保護時に処置済み</div></div></li>
+          <li class="health-item"><div class="health-icon health-ok">✅</div><div><div class="health-label">不妊手術（避妊手術）</div><div class="health-note">2025年12月10日実施済み</div></div></li>
+          <li class="health-item"><div class="health-icon health-ok">✅</div><div><div class="health-label">マイクロチップ</div><div class="health-note">2025年12月10日装着済み</div></div></li>
+        </ul>
+      </div>
+    </div>
+    <aside class="cat-sidebar">
+      <div class="status-bar">
+        <div><div class="status-text">🍊 里親募集中</div><div style="font-size:0.75rem;color:#065f46;margin-top:2px">穏やかな暮らしに寄り添います</div></div>
+        <span style="font-size:1.5rem">🧡</span>
+      </div>
+      <div class="sidebar-card cta-card">
+        <div class="cta-title">みかんちゃんの里親になりませんか？</div>
+        <div class="cta-sub">抱っこするたびに、ほっとする温かさがあります。</div>
+        <div class="cta-btn-wrap">
+          <a href="cat.html#contact" class="btn-primary" style="text-align:center;padding:14px">里親に応募する</a>
+          <a href="cat.html#contact" class="btn-secondary" style="text-align:center;padding:12px">見学を申し込む</a>
+        </div>
+      </div>
+      <div class="sidebar-card">
+        <div style="font-size:0.88rem;font-weight:700;color:var(--warm-mocha);margin-bottom:12px">🔍 クイック情報</div>
+        <ul class="quick-facts">
+          <li><span class="fact-label">年齢</span><span class="fact-value">推定2歳</span></li>
+          <li><span class="fact-label">性別</span><span class="fact-value">メス（避妊済み）</span></li>
+          <li><span class="fact-label">先住猫</span><span class="fact-value">要相談</span></li>
+          <li><span class="fact-label">子ども</span><span class="fact-value">穏やかな子ならOK</span></li>
+          <li><span class="fact-label">エネルギー</span><span class="fact-value">低め〜中程度</span></li>
+          <li><span class="fact-label">譲渡費用目安</span><span class="fact-value">1〜2万円</span></li>
+        </ul>
+      </div>
+      <div class="sidebar-card">
+        <div style="font-size:0.88rem;font-weight:700;color:var(--warm-mocha);margin-bottom:12px">📝 里親応募条件</div>
+        <ul class="req-list">
+          <li class="req-item"><span>✅</span><span>20歳以上・家族全員の同意</span></li>
+          <li class="req-item"><span>✅</span><span>ペット可住居・完全室内飼い</span></li>
+          <li class="req-item"><span>✅</span><span>定期的な通院・健康管理ができる方</span></li>
+          <li class="req-item"><span>✅</span><span>最期まで責任を持って飼える方</span></li>
+        </ul>
+      </div>
+    </aside>
+  </div>
+
+  <div class="other-cats-section"><div class="other-cats-inner"><div class="other-title">🐾 他にも仲間たちが待っています</div><div class="other-grid">
+    <a href="cat-mugi.html" class="other-card"><div class="other-img" style="background:linear-gradient(135deg,#fde8d0,#fdd5b0)">🐈</div><div class="other-body"><div class="other-name">むぎ</div><div class="other-meta">2歳・メス・キジトラ</div></div></a>
+    <a href="cat-kuro.html" class="other-card"><div class="other-img" style="background:linear-gradient(135deg,#d4e8c8,#c0e0b8)">🐈‍⬛</div><div class="other-body"><div class="other-name">くろ</div><div class="other-meta">1歳・オス・黒猫</div></div></a>
+    <a href="cat-choko.html" class="other-card"><div class="other-img" style="background:linear-gradient(135deg,#e8d5c4,#d4b896)">😸</div><div class="other-body"><div class="other-name">ちょこ</div><div class="other-meta">3歳・メス・サビ猫</div></div></a>
+    <a href="cat-sora.html" class="other-card"><div class="other-img" style="background:linear-gradient(135deg,#e0f0ff,#c8e4ff)">🐱</div><div class="other-body"><div class="other-name">そら</div><div class="other-meta">4ヶ月・オス・白猫</div></div></a>
+  </div></div></div>
+
+  <footer><div class="footer-inner"><div class="footer-top"><div><div class="footer-logo">🐱 東京猫ランドsea</div><div style="font-size:0.82rem">東京の保護猫たちに、あたたかい家族を。</div></div><ul class="footer-nav"><li><a href="cat.html#cats">里親募集中の猫</a></li><li><a href="blog.html">活動・ブログ</a></li><li><a href="cat.html#contact">お問い合わせ</a></li></ul></div><div class="footer-copy">© 2026 東京猫ランドsea. All rights reserved.</div></div></footer>
+  <script>
+    window.addEventListener('scroll',()=>document.getElementById('nav').classList.toggle('scrolled',scrollY>20));
+    document.getElementById('hamburger').addEventListener('click',()=>document.getElementById('nav-mobile').classList.toggle('open'));
+    function closeMobile(){document.getElementById('nav-mobile').classList.remove('open')}
+    function changePhoto(thumb,url){document.getElementById('galleryMain').src=url;document.querySelectorAll('.gallery-thumb').forEach(t=>t.classList.remove('active'));thumb.classList.add('active')}
+  </script>
+</body>
+</html>
