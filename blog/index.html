@@ -302,7 +302,7 @@
     <main>
       <div class="articles-grid" id="articlesGrid">
 
-        <article class="article-card fade-in" data-cat="ブログ" data-tags="保護活動,春,レポート" data-title="春の保護活動レポート。今月は8匹の猫を保護しました。">
+        <article class="article-card fade-in" data-cat="ブログ" data-tags="保護活動,春,レポート" data-title="春の保護活動レポート。今月は8匹の猫を保護しました。" data-link="posts/spring-report/">
           <div class="article-thumb" style="background:linear-gradient(135deg,#fde8d0,#fdd5b0)">🌸</div>
           <div class="article-body">
             <div class="article-meta">
@@ -324,7 +324,7 @@
           </div>
         </article>
 
-        <article class="article-card fade-in" data-cat="イベント" data-tags="譲渡会,5月,渋谷" data-title="5月の譲渡会のお知らせ｜渋谷区文化センター">
+        <article class="article-card fade-in" data-cat="イベント" data-tags="譲渡会,5月,渋谷" data-title="5月の譲渡会のお知らせ｜渋谷区文化センター" data-link="posts/event-may/">
           <div class="article-thumb" style="background:linear-gradient(135deg,#dbeafe,#bfdbfe)">📅</div>
           <div class="article-body">
             <div class="article-meta">
@@ -346,7 +346,7 @@
           </div>
         </article>
 
-        <article class="article-card fade-in" data-cat="猫情報" data-tags="里親決定,はな,おめでとう" data-title="はなちゃんの里親が決まりました！ありがとうございます。">
+        <article class="article-card fade-in" data-cat="猫情報" data-tags="里親決定,はな,おめでとう" data-title="はなちゃんの里親が決まりました！ありがとうございます。" data-link="posts/hana-adopted/">
           <div class="article-thumb" style="background:linear-gradient(135deg,#dcfce7,#bbf7d0)">🎉</div>
           <div class="article-body">
             <div class="article-meta">
@@ -368,7 +368,7 @@
           </div>
         </article>
 
-        <article class="article-card fade-in" data-cat="ブログ" data-tags="里親体験談,暮らし,1年" data-title="保護猫と暮らして1年。あの日の決断が人生を変えました。">
+        <article class="article-card fade-in" data-cat="ブログ" data-tags="里親体験談,暮らし,1年" data-title="保護猫と暮らして1年。あの日の決断が人生を変えました。" data-link="posts/living-with-cat/">
           <div class="article-thumb" style="background:linear-gradient(135deg,#fde8d0,#e8d5c0)">🏡</div>
           <div class="article-body">
             <div class="article-meta">
@@ -390,7 +390,7 @@
           </div>
         </article>
 
-        <article class="article-card fade-in" data-cat="レポート" data-tags="譲渡会,春,12組" data-title="春の譲渡会レポート｜12組のご家族にご参加いただきました">
+        <article class="article-card fade-in" data-cat="レポート" data-tags="譲渡会,春,12組" data-title="春の譲渡会レポート｜12組のご家族にご参加いただきました" data-link="posts/spring-event-report/">
           <div class="article-thumb" style="background:linear-gradient(135deg,#f3e8ff,#e9d5ff)">📋</div>
           <div class="article-body">
             <div class="article-meta">
@@ -412,7 +412,7 @@
           </div>
         </article>
 
-        <article class="article-card fade-in" data-cat="猫情報" data-tags="むぎ,緊急保護,キジトラ" data-title="むぎちゃんが緊急保護されました。里親募集を開始します。">
+        <article class="article-card fade-in" data-cat="猫情報" data-tags="むぎ,緊急保護,キジトラ" data-title="むぎちゃんが緊急保護されました。里親募集を開始します。" data-link="posts/mugi-rescued/">
           <div class="article-thumb" style="background:linear-gradient(135deg,#fde8d0,#fdd5b0)">🐈</div>
           <div class="article-body">
             <div class="article-meta">
@@ -429,12 +429,12 @@
             </div>
             <div class="article-footer">
               <button class="like-btn" onclick="toggleLike(this)">🤍 <span class="like-count">55</span></button>
-              <a href="cat-mugi.html" class="read-more">続きを読む →</a>
+              <a href="posts/mugi-rescued/" class="read-more">続きを読む →</a>
             </div>
           </div>
         </article>
 
-        <article class="article-card fade-in" data-cat="ブログ" data-tags="3月,活動まとめ,月次" data-title="3月の活動まとめ。保護5匹・里親決定3匹">
+        <article class="article-card fade-in" data-cat="ブログ" data-tags="3月,活動まとめ,月次" data-title="3月の活動まとめ。保護5匹・里親決定3匹" data-link="posts/march-summary/">
           <div class="article-thumb" style="background:linear-gradient(135deg,#d4e8c8,#c0e0b8)">🌱</div>
           <div class="article-body">
             <div class="article-meta">
@@ -695,6 +695,14 @@
     });
 
     renderCalendar();
+  
+    // 続きを読む リンクの設定
+    document.querySelectorAll('.article-card[data-link]').forEach(card => {
+      const link = card.dataset.link;
+      const btn = card.querySelector('.read-more');
+      if (btn) btn.href = link;
+    });
+
   </script>
 </body>
 </html>
